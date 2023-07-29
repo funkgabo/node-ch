@@ -1,14 +1,12 @@
 export default class ProductManager {
-    
-    constructor(){
+
+    constructor() {
         this.products = []
     }
     //MÉTODOS#########
 
     //Agregar Producto
-    addProduct (product) {
-        const id = this.idProduct()
-        product.id = id
+    addProduct(product) {
         this.products.push(product)
     }
     //Obtener todos los Productos
@@ -19,15 +17,7 @@ export default class ProductManager {
     //Obtener productos por ID
     getProductById(id) {
         const product = this.products
-        .filter(product => product.id === id)
-        return product
-    }
-
-    //ID autogenerado
-    idProduct () {
-        if(this.products.length < 1) return 1
-        const ids = this.products.map(product => product.id)
-        const id = Math.max(...ids) + 1
-        return id
+            .find(product => product.id === id)
+        return product ? product : 'Product Not found'
     }
 }
