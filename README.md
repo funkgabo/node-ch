@@ -31,7 +31,6 @@ La clase **Product** tiene como estructura el los siguientes datos en su constru
 - thumbnail
 - code
 - stock
-        this.nombre = nombre;
 ```
 
 
