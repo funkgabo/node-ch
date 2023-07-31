@@ -16,6 +16,9 @@ La fichero **classes** cuenta con las siguientes clases  **ProductManager** y **
 - addProduct
 - getProducts
 - getProductByid
+- deleteProductById
+- deleteAllProducts
+- UpdateProductById
 ```
 **Producto.js:**
 ```
