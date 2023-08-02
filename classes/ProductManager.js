@@ -12,7 +12,13 @@ export default class ProductManager {
 
     //1.- Agregar Producto
     addProduct(product) {
-        this.products.push(product)
+        if (!product.id || !product.nombre || !product.precio ||
+            !product.categoria || !product.description || !product.color
+            || !product.thumbnail || !product.code || !product.stock){
+                console.log('Todos los campos son requeridos')
+                return
+            }
+            this.products.push(product)
         const jsonProduct = JSON.stringify(this.products)
         fs.writeFileSync('./data/products.json', jsonProduct, 'utf-8')
         return 'New Product Added'
