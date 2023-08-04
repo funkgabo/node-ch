@@ -60,6 +60,12 @@ export default class ProductManager {
     }
     //6.- Actualizar un Producto
     async UpdateProductById(id, product) {
+        if (!product.nombre || !product.precio ||
+            !product.categoria || !product.description || !product.color ||
+            !product.thumbnail || !product.code || !product.stock) {
+            return console.log('All Product Fields are Required')
+        }
+
         const prods = JSON.parse(await fs.readFile(path, 'utf-8'))
         const prod = prods.find(prod => prod.id === id)
         if (!prod) return console.log(`Product ID ${id} Not Found`)
