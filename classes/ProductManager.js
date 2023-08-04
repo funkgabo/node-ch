@@ -1,86 +1,93 @@
-import fs from "node:fs"
-import readline from 'readline'
-const data = fs.readFileSync('./data/products.json')
-const products = JSON.parse(data)
+import { promises as fs } from "node:fs"
+const path = './data/products.json'
 
 export default class ProductManager {
 
-    constructor() {
-        this.products = products
-    }
+    constructor() { }
     //MÉTODOS//
 
     //1.- Agregar Producto
-    addProduct(product) {
-        if (!product.id || !product.nombre || !product.precio ||
-            !product.categoria || !product.description || !product.color
-            || !product.thumbnail || !product.code || !product.stock){
-                console.log('Todos los campos son requeridos')
-                return
-            }
-            this.products.push(product)
-        const jsonProduct = JSON.stringify(this.products)
-        fs.writeFileSync('./data/products.json', jsonProduct, 'utf-8')
-        return 'New Product Added'
+    async addProduct(product) {
+        if (!product.nombre || !product.precio ||
+            !product.categoria || !product.description || !product.color ||
+            !product.thumbnail || !product.code || !product.stock) {
+            console.log('All fields are Required')
+            return
+        }
+        const prods = JSON.parse(await fs.readFile(path, 'utf-8'))
+        const producto = prods.find(prod => prod.id === product.id)
+
+        if (producto) {
+            console.log("Existing Product")
+        } else {
+            const jsonProduct = JSON.stringify(product)
+            const parseProuct = JSON.parse(jsonProduct)
+            parseProuct.id = await this.idProduct()
+            prods.push(parseProuct)
+            await fs.writeFile(path, JSON.stringify(prods))
+        }
+        return console.log('Product Added')
     }
     //2.- Obtener todos los Productos
-    getProductos() {
-        return this.products
+    async getProductos() {
+        const prods = JSON.parse(await fs.readFile(path, 'utf-8'))
+        return console.log(prods)
     }
 
     //3.- Obtener productos por ID
-    getProductById(id) {
-        const product = this.products
-            .find(product => product.id === id)
-        return product ? product : 'Product Not found'
+    async getProductById(id) {
+        const product = JSON.parse(await fs.readFile(path, 'utf-8'))
+        const searchedProduct = product.filter(product => product.id === id)
+        return searchedProduct.length > 0
+            ? console.log(searchedProduct)
+            : console.log(`Product ID ${id} Not Found`)
     }
 
     //4.- Borrar un producto por ID
-    deleteProductById(id) {
-        const productById = this.getProductById(id)
-        if (productById === 'Product Not found') {
-            return `Product ID ${id} Not Found`
-        } else {
-            const filteredProducts = this.products.filter(product => product.id !== id)
-            const jsonFilteredProducts = JSON.stringify(filteredProducts)
-            fs.writeFileSync('./data/products.json', jsonFilteredProducts, 'utf-8')
+    async deleteProductById(id) {
+        const prods = JSON.parse(await fs.readFile(path, 'utf-8'))
+        const product = prods.find(prod => prod.id === id)
+        if (!product) return console.log(`Product ID ${id} Not Found`)
 
-            return `Product ID ${id} was deleted`
-        }
+        await fs.writeFile(path, JSON.stringify(prods.filter(prod => prod.id !== id)))
+        return console.log(`Product ID ${id} Was Deleted`)
     }
     //5.- Borrar todos los productos
-    deleteAllProducts() {
-        this.products = []
-        const jsonDeletedProducts = JSON.stringify(this.products)
-        fs.writeFileSync('./data/products.json', jsonDeletedProducts, 'utf-8')
-        return 'All Products Deleted'
+    async deleteAllProducts() {
+        const prods = JSON.parse(await fs.readFile(path, 'utf-8'))
+        await fs.writeFile(path, '[]')
+        return console.log('All Products Deleted')
     }
     //6.- Actualizar un Producto
-    UpdateProductById(id) {
-        this.getUserPrompt()
-            .then(result => {
-                const productById = this.getProductById(id)
-                const jsonProduct = JSON.stringify(productById)
-                const parseProduct = JSON.parse(jsonProduct)
-                parseProduct.nombre = result
-                const filteredProducts = this.products.filter(product => product.id !== id)
-                const concatUpdate = [...filteredProducts, parseProduct]
-                const concatUpdateString = JSON.stringify(concatUpdate)
-                fs.writeFileSync('./data/products.json', concatUpdateString, 'utf-8')
-            }).finally(() => console.log('Product Name Updated'))
+    async UpdateProductById(id, product) {
+        const prods = JSON.parse(await fs.readFile(path, 'utf-8'))
+        const prod = prods.find(prod => prod.id === id)
+        if (!prod) return console.log(`Product ID ${id} Not Found`)
+        
+        const index = prods.findIndex(prod => prod.id === id)
+
+        if (index === -1) return console.log(`Product ID ${id} Was Deleted`)
+
+        prods[index].nombre = product.nombre
+        prods[index].precio = product.precio
+        prods[index].categoria = product.categoria
+        prods[index].description = product.description
+        prods[index].color = product.color
+        prods[index].thumbnail = product.thumbnail
+        prods[index].code = product.code
+        prods[index].stock = product.stock
+        await fs.writeFile(path, JSON.stringify(prods))
+
+        return console.log('Product Updated')
+
     }
-    //Lectura de inputs de usuario
-    getUserPrompt() {
-        return new Promise(resolve => {
-            const rl = readline.createInterface({
-                input: process.stdin,
-                output: process.stdout
-            });
-            rl.question("Set a new Name to the Product", (answer) => {
-                resolve(answer);
-                rl.close();
-            });
-        });
+    //ID Autoincremental
+    async idProduct() {
+        const products = JSON.parse(await fs.readFile(path, 'utf-8'))
+        if (products.length < 1) return 1
+        const ids = products.map(product => product.id)
+        const id = Math.max(...ids) + 1
+        return id
     }
 
 }
