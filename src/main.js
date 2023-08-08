@@ -1,5 +1,6 @@
-import Producto from "./classes/Producto.js";
-import ProductManager from "./classes/ProductManager.js";
+import Producto from "../classes/Producto.js";
+import ProductManager from "../classes/ProductManager.js";
+
 
 
 //MÉTODOS DE CREACIÓN DE PRODUCTOS//
@@ -8,24 +9,29 @@ import ProductManager from "./classes/ProductManager.js";
 
 //1.-  CREACIÓN DE PRODUCTOS //
 //BLOQUE 1// 
-const producto1 = new Producto('Jamón', 3000, 'carnes', 'un estracto del cerdo', 'naranja', [], 'EEFFOL', 5)
-const manager1 = new ProductManager()
-manager1.addProduct(producto1)
+// const producto1 = new Producto('Jamón', 3000, 'carnes', 'un estracto del cerdo', 'naranja', [], 'CAR266', 5)
+// const manager1 = new ProductManager()
+// manager1.addProduct(producto1)
 
 //BLOQUE 2//
-// const producto2 = new Producto('pan', 500, 'panadería', 'Un bien del pueblo', 'café', [], 'FFLLVF', 16)
+// const producto2 = new Producto('pan', 500, 'panaderia', 'Un bien del pueblo', 'café', [], 'PAN399', 16)
 // const manager1 = new ProductManager()
 // manager1.addProduct(producto2)
 
 //BLOQUE 3//
-// const producto3 = new Producto('tomate', 1200, 'verduras', 'La verdura de Italia', 'rojo', [], 'GGBBLO', 11)
+// const producto3 = new Producto('tomate', 1200, 'verduras', 'La verdura de Italia', 'rojo', [], 'VER559', 11)
 // const manager1 = new ProductManager()
 // manager1.addProduct(producto3)
 
 //BLOQUE 4//
-// const producto4 = new Producto('manzana', 800, 'fruta','fruto del Eden', 'roja', [], 'YYNVBT', 22)
+// const producto4 = new Producto('manzana', 800, 'fruta','fruto del Eden', 'roja', [], 'FRU866', 22)
 // const manager1 = new ProductManager()
 // manager1.addProduct(producto4)
+
+//BLOQUE 5//
+// const producto5 = new Producto('Pera', 650, 'fruta','Mientras más jugosa mejor', 'verde', [], 'FRU875', 12)
+// const manager1 = new ProductManager()
+// manager1.addProduct(producto5)
 
 
 /* ---------------------------------------------------------------------------------------------------- */
