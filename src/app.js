@@ -26,6 +26,19 @@ app.get('/products', async (req, res) => {
     }
 
 })
+app.get('/product/:id', async (req, res) => {
+    const { id } = req.params
+    
+    if (id) {
+        const manager = new ProductManager()
+        const product = await manager.getProductById(Number(id))
+        console.log(product)
+        res.json(product)
+    } else {
+        console.log('Product not Found')
+    }
+
+})
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`)

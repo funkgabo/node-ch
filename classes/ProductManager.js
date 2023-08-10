@@ -41,7 +41,7 @@ export default class ProductManager {
         const product = JSON.parse(await fs.readFile(this.path, 'utf-8'))
         const searchedProduct = product.filter(product => product.id === id)
         return searchedProduct.length > 0
-            ? console.log(searchedProduct)
+            ? searchedProduct
             : console.log(`Product ID ${id} Not Found`)
     }
 
