@@ -21,7 +21,8 @@ cartRouter.post('/:cid/product/:pid', async (req, res) => {
     const { cid } = req.params
     const { pid } = req.params
     const manager = new CartManager()
-    const cart = await manager.getCart()
+    const cart = await manager.getCart(Number(cid))
+    console.log(cart)
     if (cart) {
         await manager.addPorductToCart(Number(cid), Number(pid))
         res.status(200).send('Product Added')
