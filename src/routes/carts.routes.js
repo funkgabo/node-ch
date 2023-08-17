@@ -2,13 +2,13 @@ import { Router } from 'express';
 import CartManager from '../../classes/CartManager.js';
 const cartRouter = Router();
 
-cartRouter.get('/', async (req, res) => {
+cartRouter.get('/:id', async (req, res) => {
     const manager = new CartManager()
-    const cart = await manager.getCart()
+    const cart = await manager.getCart(Number(req.params.id))
     if (cart)
         res.status(200).json(cart)
     else
-        res.status(400).send('There is no Any Cart Created Yet')
+        res.status(400).send('There is no Any Cart Created Yet or Cart Not Found')
 });
 
 cartRouter.post('/', async (req, res) => {

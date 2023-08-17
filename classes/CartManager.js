@@ -6,8 +6,8 @@ export default class CartManager {
     }
     //Métodos
     async getCart(id) {
-        const cart = JSON.parse(await fs.readFile(this.path, 'utf-8'))
-        return cart[0]
+        const carts = JSON.parse(await fs.readFile(this.path, 'utf-8'))
+        return carts.find(cart => cart.id === Number(id))
     }
 
     async createCart() {

@@ -16,7 +16,7 @@ export default class ProductManager {
             console.log('All fields are Required')
             return
         }
-        jprod.status = jprod.status === true ? true : false
+        jprod.status = !jprod.status ? false : true
         const prods = JSON.parse(await fs.readFile(this.path, 'utf-8'))
         const producto = prods.find(prod => prod.id === product.id)
 
