@@ -27,7 +27,7 @@ cartRouter.post('/:cid/product/:pid', async (req, res) => {
         await manager.addPorductToCart(Number(cid), Number(pid))
         res.status(200).send('Product Added')
     } else {
-        res.status(400).send('There is no Any Cart Created Yet')
+        res.status(400).send('There is no Any Cart Created Yet or This cart just not exist')
     }
 });
 
