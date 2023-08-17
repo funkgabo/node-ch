@@ -2,44 +2,44 @@ import { promises as fs } from "node:fs"
 
 export default class ProductManager {
 
-    constructor() { 
+    constructor() {
         this.path = './data/products.json'
     }
     //MÉTODOS//
 
     //1.- Agregar Producto
     async addProduct(product) {
-        if (!product.nombre || !product.precio ||
-            !product.categoria || !product.description || !product.color ||
-            !product.thumbnail || !product.code || !product.stock) {
+        const jprod = JSON.parse(product)
+        if (!jprod.nombre || !jprod.precio ||
+            !jprod.categoria || !jprod.description || !jprod.color ||
+            !jprod.thumbnail || !jprod.code || !jprod.stock) {
             console.log('All fields are Required')
             return
         }
+        jprod.status = jprod.status === true ? true : false
         const prods = JSON.parse(await fs.readFile(this.path, 'utf-8'))
         const producto = prods.find(prod => prod.id === product.id)
 
         if (producto) {
             console.log("Existing Product")
         } else {
-            const jsonProduct = JSON.stringify(product)
-            const parseProuct = JSON.parse(jsonProduct)
-            parseProuct.id = await this.idProduct()
-            prods.push(parseProuct)
+            jprod.id = await this.idProduct()
+            prods.push(jprod)
             await fs.writeFile(this.path, JSON.stringify(prods))
         }
         return console.log('Product Added')
     }
     //2.- Obtener todos los Productos
-    async getProductos() {
+    async getProducts() {
         const prods = JSON.parse(await fs.readFile(this.path, 'utf-8'))
-        //console.log(prods)
         return prods
     }
 
     //3.- Obtener productos por ID
     async getProductById(id) {
+        const idn = Number(id)
         const product = JSON.parse(await fs.readFile(this.path, 'utf-8'))
-        const searchedProduct = product.filter(product => product.id === id)
+        const searchedProduct = product.filter(product => product.id === idn)
         return searchedProduct.length > 0
             ? searchedProduct
             : console.log(`Product ID ${id} Not Found`)
@@ -48,11 +48,11 @@ export default class ProductManager {
     //4.- Borrar un producto por ID
     async deleteProductById(id) {
         const prods = JSON.parse(await fs.readFile(this.path, 'utf-8'))
-        const product = prods.find(prod => prod.id === id)
+        const product = prods.find(prod => prod.id === Number(id))
         if (!product) return console.log(`Product ID ${id} Not Found`)
 
-        await fs.writeFile(this.path, JSON.stringify(prods.filter(prod => prod.id !== id)))
-        return console.log(`Product ID ${id} Was Deleted`)
+        await fs.writeFile(this.path, JSON.stringify(prods.filter(prod => prod.id !== Number(id))))
+        return product
     }
     //5.- Borrar todos los productos
     async deleteAllProducts() {
@@ -62,19 +62,21 @@ export default class ProductManager {
     }
     //6.- Actualizar un Producto
     async UpdateProductById(id, product) {
+
+        const idn = Number(id)
         if (!product.nombre || !product.precio ||
             !product.categoria || !product.description || !product.color ||
-            !product.thumbnail || !product.code || !product.stock) {
+            !product.thumbnail || !product.code || !product.stock || !product.status) {
             return console.log('All Product Fields are Required')
         }
 
         const prods = JSON.parse(await fs.readFile(this.path, 'utf-8'))
-        const prod = prods.find(prod => prod.id === id)
-        if (!prod) return console.log(`Product ID ${id} Not Found`)
-        
-        const index = prods.findIndex(prod => prod.id === id)
+        const prod = prods.find(prod => prod.id === idn)
+        if (!prod) return console.log(`Product ID ${idn} Not Found`)
 
-        if (index === -1) return console.log(`Product ID ${id} Was Deleted`)
+        const index = prods.findIndex(prod => prod.id === idn)
+
+        if (index === -1) return console.log(`Product ID ${idn} Was Deleted`)
 
         prods[index].nombre = product.nombre
         prods[index].precio = product.precio
@@ -84,11 +86,22 @@ export default class ProductManager {
         prods[index].thumbnail = product.thumbnail
         prods[index].code = product.code
         prods[index].stock = product.stock
+        prods[index].stock = product.status
         await fs.writeFile(this.path, JSON.stringify(prods))
 
         return console.log('Product Updated')
 
     }
+
+    async getProductByCode(code) {
+        const product = JSON.parse(await fs.readFile(this.path, 'utf-8'))
+        const searchedProduct = product.filter(product => product.code === code)
+        console.log(searchedProduct)
+        return searchedProduct.length > 0
+            ? searchedProduct
+            : console.log('Cannot Create The Product')
+    }
+
     //ID Autoincremental
     async idProduct() {
         const products = JSON.parse(await fs.readFile(this.path, 'utf-8'))
