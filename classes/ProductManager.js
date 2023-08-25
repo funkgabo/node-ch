@@ -10,9 +10,10 @@ export default class ProductManager {
     //1.- Agregar Producto
     async addProduct(product) {
         const jprod = JSON.parse(product)
+        console.log(product)
         if (!jprod.nombre || !jprod.precio ||
             !jprod.categoria || !jprod.description || !jprod.color ||
-            !jprod.thumbnail || !jprod.code || !jprod.stock) {
+            !jprod.code || !jprod.stock) {
             console.log('All fields are Required')
             return
         }

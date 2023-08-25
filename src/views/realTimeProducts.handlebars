@@ -1,0 +1,34 @@
+<h1>Crear Nuevo Producto</h1>
+<form id="idForm">
+    <label for="nombre">Name</label>
+    <input type="text" required name="nombre">
+    <label for="description">Description</label>
+    <input type="text" required name="description">
+    <label for="categoria">Category</label>
+    <input type="text" required name="categoria">
+    <label for="precio">Price</label>
+    <input type="number" required name="precio">
+    <label for="color">Color</label>
+    <input type="text" required name="color">
+    <label for="stock">Stock</label>
+    <input type="number" required name="stock">
+    <label for="code">Code</label>
+    <input type="text" required name="code">
+    <button type="submit">Enviar</button>
+</form><br><br>
+
+<table class="table table-striped">
+<thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Category</th>
+      <th scope="col">Price</th>
+      <th scope="col">Color</th>
+      <th scope="col">Stock</th>
+      <th scope="col">Code</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider" id="tableBody">
+  </tbody>
+</table>
