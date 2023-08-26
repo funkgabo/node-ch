@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
 })
 
 const serverExpress = app.listen(PORT, () => {
-    console.log(`Server on http://localhost:${PORT}`)
+    console.log(`Server on http://localhost:${PORT}/static/home`)
 })
 
 //Middleware
