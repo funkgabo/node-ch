@@ -59,7 +59,9 @@ io.on('connection', (socket) => {
     socket.on('addProduct', async (nuevoProd) => {
         const manager = new ProductManager()
         await manager.addProduct(JSON.stringify(nuevoProd))
-        socket.emit('products', [nuevoProd])
+        const products = await manager.getProducts()
+        const lastProd = products[products.length -1]
+        socket.emit('products', [lastProd])
     })
     
     socket.on('loadProducts', async() => {
